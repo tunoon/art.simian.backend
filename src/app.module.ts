@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { HttpExceptionFilter } from './common/exception/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -21,11 +22,11 @@ import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
       synchronize: true,
       logging: true
     }),
-    UserModule
+    UserModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter
@@ -33,7 +34,8 @@ import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor
-    }
+    },
+    AppService
   ]
 })
 export class AppModule {
