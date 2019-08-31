@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { HttpExceptionFilter } from './common/exception/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { ProductModule } from './product/product.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ProductModule } from './product/product.module';
       logging: true
     }),
     UserModule,
-    ProductModule
+    ProductModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [
