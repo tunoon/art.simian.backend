@@ -3,15 +3,17 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne
 } from 'typeorm';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('address')
 export class AddressEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @ManyToOne(type => UserEntity, user => user.id)
   userId: string;
 
   @Column()
@@ -31,9 +33,6 @@ export class AddressEntity {
 
   @Column()
   address: string;
-
-  @Column()
-  comment: string;
 
   @Column()
   isDefault: boolean;

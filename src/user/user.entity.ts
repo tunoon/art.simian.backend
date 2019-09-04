@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  BeforeInsert
+  BeforeInsert,
+  OneToMany
 } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { AddressEntity } from '../address/address.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -32,6 +34,9 @@ export class UserEntity {
 
   @Column({ type: 'tinyint' }) // 1 male / 2 female
   gender: number;
+
+  @OneToMany(type => AddressEntity, addressList => addressList.userId)
+  addressList: AddressEntity[];
 
   // wechat info
   @Column()
@@ -62,7 +67,7 @@ export class UserEntity {
   }
 
   toResponseObject(showToken: boolean = false): any {
-    const { id, created, nickname, token } = this;
+    const { id, nickname, token } = this;
     const responseObject: any = {
       id,
       nickname

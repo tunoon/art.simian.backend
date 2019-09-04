@@ -18,9 +18,6 @@ export class AddressDto {
   @IsString()
   address: string;
 
-  @IsString()
-  comment: string;
-
   @IsBoolean()
   isDefault: boolean;
 }

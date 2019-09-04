@@ -5,7 +5,6 @@ import {
   HttpException,
   HttpStatus
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { verify } from 'jsonwebtoken';
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -15,7 +14,7 @@ export class AuthGuard implements CanActivate {
     if (!authorization) {
       return false;
     }
-    await this.validateToken(authorization);
+    request.user = await this.validateToken(authorization);
     return true;
   }
 

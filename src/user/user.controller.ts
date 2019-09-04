@@ -13,9 +13,8 @@ import {
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { User } from './user.decorator';
-
-import { ValidationPipe } from '../common/pipe/validation.pipe';
 import { AuthGuard } from '../common/guard/auth.guard';
+import { ValidationPipe } from '../common/pipe/validation.pipe';
 
 @Controller('api/user')
 export class UserController {
