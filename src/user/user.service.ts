@@ -47,4 +47,27 @@ export class UserService {
     await this.userRepository.delete({ id });
     return user;
   }
+
+  async login(body: Partial<UserDto>) {
+    const { nickname, password } = body;
+    const user = await this.userRepository.findOne({ nickname });
+    if (!user || !(await user.comparePassword(password))) {
+      throw new HttpException(
+        'Invalid username/password',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    return user.toResponseObject(true);
+  }
+
+  async signup(body: Partial<UserDto>) {
+    const { nickname } = body;
+    const user = await this.userRepository.findOne({ nickname });
+    if (user) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+    const newUser = await this.userRepository.create(body);
+    await this.userRepository.save(newUser);
+    return newUser;
+  }
 }

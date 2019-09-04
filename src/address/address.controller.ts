@@ -18,7 +18,7 @@ export class AddressController {
 
   @Post('/create')
   @UsePipes(new ValidationPipe())
-  createUser(@Body() body: AddressDto) {
+  createAddress(@Body() body: AddressDto) {
     return this.addressService.createAddress(body);
   }
 }
