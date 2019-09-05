@@ -39,13 +39,20 @@ export class AddressController {
   }
 
   @Put('/update/:id')
-  @UsePipes(new ValidationPipe())
-  updateAddress(@Param('id') id: string, @Body() body: Partial<AddressDto>) {
-    return this.addressService.updateAddress(id, body);
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
+  updateAddress(
+    @User() user: UserEntity,
+    @Param('id') id: string,
+    @Body() body: Partial<AddressDto>
+  ) {
+    return this.addressService.updateAddress(user, id, body);
   }
 
   @Delete('/delete/:id')
-  deleteAddress(@Param('id') id: string) {
-    return this.addressService.deleteAddress(id);
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
+  deleteAddress(@User() user: UserEntity, @Param('id') id: string) {
+    return this.addressService.deleteAddress(user, id);
   }
 }

@@ -21,13 +21,12 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('/all')
-  @UseGuards(AuthGuard)
   getAllUsers() {
     return this.userService.getAllUsers();
   }
 
   @Post('/create')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(ValidationPipe)
   createUser(@Body() body: UserDto) {
     return this.userService.createUser(body);
   }
@@ -38,7 +37,7 @@ export class UserController {
   }
 
   @Put('/update/:id')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(ValidationPipe)
   updateUser(@Param('id') id: string, @Body() body: Partial<UserDto>) {
     return this.userService.updateUser(id, body);
   }

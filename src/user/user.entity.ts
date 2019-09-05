@@ -35,7 +35,7 @@ export class UserEntity {
   @Column({ type: 'tinyint' }) // 1 male / 2 female
   gender: number;
 
-  @OneToMany(type => AddressEntity, addressList => addressList.userId)
+  @OneToMany(type => AddressEntity, addressList => addressList.user)
   addressList: AddressEntity[];
 
   // wechat info

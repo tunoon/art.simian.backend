@@ -13,12 +13,19 @@ export class AddressService {
     private userRepository: Repository<UserEntity>
   ) {}
 
-  async getAddressList(user: UserEntity) {
+  private ensureOwnership(address: AddressEntity, user: UserEntity) {
     const { id: userId } = user;
+    if (address.user.id !== userId) {
+      throw new HttpException('Authentication failed', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  async getAddressList(user: UserEntity) {
+    const { id } = user;
     const addressList = await this.addressRepository.find({
-      userId
+      relations: ['user']
     });
-    return addressList;
+    return addressList.filter(address => address.user.id === id);
   }
 
   async getAddress(id: string) {
@@ -30,26 +37,33 @@ export class AddressService {
   }
 
   async createAddress(user: UserEntity, body: AddressDto) {
-    const { id: userId } = user;
-    const address = await this.addressRepository.create({ ...body, userId });
+    const address = await this.addressRepository.create({ ...body, user });
     await this.addressRepository.save(address);
     return address;
   }
 
-  async updateAddress(id: string, body: Partial<AddressDto>) {
-    const address = await this.addressRepository.findOne({ id });
+  async updateAddress(user: UserEntity, id: string, body: Partial<AddressDto>) {
+    const address = await this.addressRepository.findOne({
+      where: { id },
+      relations: ['user']
+    });
     if (!address) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
+    this.ensureOwnership(address, user);
     await this.addressRepository.update({ id }, body);
-    return address;
+    return { ...address, ...body };
   }
 
-  async deleteAddress(id: string) {
-    const address = await this.addressRepository.findOne({ id });
+  async deleteAddress(user: UserEntity, id: string) {
+    const address = await this.addressRepository.findOne({
+      where: { id },
+      relations: ['user']
+    });
     if (!address) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
+    this.ensureOwnership(address, user);
     await this.addressRepository.delete({ id });
     return address;
   }

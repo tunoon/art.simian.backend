@@ -13,8 +13,8 @@ export class AddressEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(type => UserEntity, user => user.id)
-  userId: string;
+  @ManyToOne(type => UserEntity, user => user.addressList)
+  user: UserEntity;
 
   @Column()
   name: string;
