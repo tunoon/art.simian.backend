@@ -48,8 +48,8 @@ export class UserController {
   }
 
   @Post('/login')
-  @UsePipes(ValidationPipe)
-  login(@Body() body: Partial<UserDto>) {
+  // @UsePipes(ValidationPipe)
+  login(@Body() body: any) {
     return this.userService.login(body);
   }
   @Post('/signup')

@@ -68,7 +68,11 @@ export class UserEntity {
 
   toResponseObject(showToken: boolean = false): any {
     const { id, nickname, token } = this;
-    const responseObject: any = {
+    const responseObject: {
+      id: string;
+      nickname: string;
+      token?: string;
+    } = {
       id,
       nickname
     };

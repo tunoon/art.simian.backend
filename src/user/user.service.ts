@@ -1,8 +1,15 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpStatus,
+  HttpException,
+  HttpService
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { map } from 'rxjs/operators';
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './user.entity';
+import { APPID, APPSECRET } from './constant';
 import { AddressEntity } from '../address/address.entity';
 
 @Injectable()
@@ -11,7 +18,8 @@ export class UserService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     @InjectRepository(AddressEntity)
-    private addressRepository: Repository<AddressEntity>
+    private addressRepository: Repository<AddressEntity>,
+    private readonly httpService: HttpService
   ) {}
 
   async getAllUsers() {
@@ -51,16 +59,23 @@ export class UserService {
     return user;
   }
 
-  async login(body: Partial<UserDto>) {
-    const { nickname, password } = body;
-    const user = await this.userRepository.findOne({ nickname });
-    if (!user || !(await user.comparePassword(password))) {
-      throw new HttpException(
-        'Invalid username/password',
-        HttpStatus.BAD_REQUEST
-      );
-    }
-    return user.toResponseObject(true);
+  login(body: any) {
+    const { code } = body;
+    const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
+    return this.httpService.get(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
+    // const { nickname, password } = body;
+    // const user = await this.userRepository.findOne({ nickname });
+    // if (!user || !(await user.comparePassword(password))) {
+    //   throw new HttpException(
+    //     'Invalid username/password',
+    //     HttpStatus.BAD_REQUEST
+    //   );
+    // }
+    // return user.toResponseObject(true);
   }
 
   async signup(body: Partial<UserDto>) {
