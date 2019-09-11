@@ -64,7 +64,7 @@ export class UserService {
     const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
     return this.httpService.get(url).pipe(
       map(response => {
-        return response.data;
+        return { statusCode: 200, message: '登录成功' };
       })
     );
     // const { nickname, password } = body;
