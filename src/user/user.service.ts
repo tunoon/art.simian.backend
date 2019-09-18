@@ -6,11 +6,16 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './user.entity';
 import { APPID, APPSECRET } from './constant';
 import { AddressEntity } from '../address/address.entity';
+
+const code2SessionUrl = (code: string) =>
+  `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
 
 @Injectable()
 export class UserService {
@@ -60,13 +65,26 @@ export class UserService {
   }
 
   login(body: any) {
-    const { code } = body;
-    const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
-    return this.httpService.get(url).pipe(
-      map(response => {
-        return { statusCode: 200, message: '登录成功' };
-      })
-    );
+    const { code, encryptedData, iv, signature } = body;
+    return this.httpService
+      .get(code2SessionUrl(code))
+      .pipe(
+        mergeMap(response => {
+          const { session_key, openid } = response.data;
+          return this.userRepository.findOne({
+            wechatOpenId: openid
+          });
+          // return { statusCode: HttpStatus.OK, message: '登录成功' };
+        })
+      )
+      .pipe(
+        map(response => {
+          if (response) {
+            console.log(response.wechatAvatarUrl);
+          } else {
+          }
+        })
+      );
     // const { nickname, password } = body;
     // const user = await this.userRepository.findOne({ nickname });
     // if (!user || !(await user.comparePassword(password))) {

@@ -11,10 +11,11 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
+import { UserDto, LoginDto } from './dto/user.dto';
 import { User } from './user.decorator';
 import { AuthGuard } from '../common/guard/auth.guard';
 import { ValidationPipe } from '../common/pipe/validation.pipe';
+
 
 @Controller('api/user')
 export class UserController {
@@ -48,10 +49,11 @@ export class UserController {
   }
 
   @Post('/login')
-   // @UsePipes(ValidationPipe)
-  login(@Body() body: any) {
+  // @UsePipes(ValidationPipe)
+  login(@Body() body: Partial<LoginDto>) {
     return this.userService.login(body);
   }
+
   @Post('/signup')
   @UsePipes(ValidationPipe)
   signup(@Body() body: Partial<UserDto>) {

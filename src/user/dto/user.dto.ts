@@ -11,7 +11,7 @@ export class UserDto {
   password: string;
   @IsInt()
   gender: number;
-  @IsString()
+
   wechatAvatarUrl: string;
   @IsString()
   wechatNickname: string;
@@ -19,4 +19,11 @@ export class UserDto {
   wechatOpenId: string;
   @IsString()
   wechatSessionKey: string;
+}
+
+export class LoginDto {
+  code: string;
+  encryptedData: string;
+  iv: string;
+  signature: string;
 }
