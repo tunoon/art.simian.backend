@@ -13,43 +13,37 @@ import { AddressEntity } from '../address/address.entity';
 
 @Entity('user')
 export class UserEntity {
-  // constructor(partial: Partial<UserEntity>) {
-  //   Object.assign(this, partial);
-  // }
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
 
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
-
-  @Column({ type: 'tinyint' }) // 1 male / 2 female
-  gender: number;
 
   @OneToMany(type => AddressEntity, addressList => addressList.user)
   addressList: AddressEntity[];
 
   // wechat info
-  @Column()
+  @Column({ nullable: true })
   wechatAvatarUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   wechatNickname: string;
 
-  @Column()
+  @Column({ unique: true, nullable: true })
   wechatOpenId: string;
-
-  @Column()
-  wechatSessionKey: string;
 
   @CreateDateColumn()
   created: Date;
@@ -57,24 +51,22 @@ export class UserEntity {
   @UpdateDateColumn()
   updated: Date;
 
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await hash(this.password, 10);
-  }
+  // @BeforeInsert()
+  // async hashPassword() {
+  //   this.password = await hash(this.password, 10);
+  // }
 
-  async comparePassword(attempt: string): Promise<boolean> {
-    return await compare(attempt, this.password);
-  }
+  // async comparePassword(attempt: string): Promise<boolean> {
+  //   return await compare(attempt, this.password);
+  // }
 
   toResponseObject(showToken: boolean = false): any {
-    const { id, nickname, token } = this;
+    const { id, wechatNickname, token } = this;
     const responseObject: {
       id: string;
-      nickname: string;
       token?: string;
     } = {
-      id,
-      nickname
+      id
     };
 
     if (showToken) {
@@ -85,11 +77,10 @@ export class UserEntity {
   }
 
   private get token(): string {
-    const { id, nickname } = this;
+    const { wechatOpenId } = this;
     return sign(
       {
-        id,
-        nickname
+        wechatOpenId
       },
       process.env.SECRET,
       { expiresIn: '7d' }

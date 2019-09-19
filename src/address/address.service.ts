@@ -37,7 +37,7 @@ export class AddressService {
   }
 
   async createAddress(user: UserEntity, body: AddressDto) {
-    const address = await this.addressRepository.create({ ...body, user });
+    const address = this.addressRepository.create({ ...body, user });
     await this.addressRepository.save(address);
     return address;
   }

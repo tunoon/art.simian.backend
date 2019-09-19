@@ -6,10 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { map, mergeMap } from 'rxjs/operators';
-import { from, of } from 'rxjs';
 
-import { UserDto } from './dto/user.dto';
+import { UserDto, LoginDto } from './dto/user.dto';
 import { UserEntity } from './user.entity';
 import { APPID, APPSECRET } from './constant';
 import { AddressEntity } from '../address/address.entity';
@@ -26,6 +24,30 @@ export class UserService {
     private addressRepository: Repository<AddressEntity>,
     private readonly httpService: HttpService
   ) {}
+
+  async login(body: Partial<LoginDto>) {
+    const { code, userInfo } = body;
+    const data = await this.httpService
+      .get(code2SessionUrl(code))
+      .toPromise()
+      .then(res => {
+        return res.data;
+      });
+    const { openid: wechatOpenId, session_key: sessionKey } = data;
+    const { nickName: wechatNickname, avatarUrl: wechatAvatarUrl } = userInfo;
+    const user = await this.userRepository.findOne({ wechatOpenId });
+    if (!user) {
+      const newUser = this.userRepository.create({
+        wechatOpenId,
+        wechatAvatarUrl,
+        wechatNickname
+      });
+      await this.userRepository.save(newUser);
+      return newUser.toResponseObject(true);
+    } else {
+      return user.toResponseObject(true);
+    }
+  }
 
   async getAllUsers() {
     const users = await this.userRepository.find();
@@ -64,46 +86,17 @@ export class UserService {
     return user;
   }
 
-  login(body: any) {
-    const { code, encryptedData, iv, signature } = body;
-    return this.httpService
-      .get(code2SessionUrl(code))
-      .pipe(
-        mergeMap(response => {
-          const { session_key, openid } = response.data;
-          return this.userRepository.findOne({
-            wechatOpenId: openid
-          });
-          // return { statusCode: HttpStatus.OK, message: '登录成功' };
-        })
-      )
-      .pipe(
-        map(response => {
-          if (response) {
-            console.log(response.wechatAvatarUrl);
-          } else {
-          }
-        })
-      );
-    // const { nickname, password } = body;
-    // const user = await this.userRepository.findOne({ nickname });
-    // if (!user || !(await user.comparePassword(password))) {
-    //   throw new HttpException(
-    //     'Invalid username/password',
-    //     HttpStatus.BAD_REQUEST
-    //   );
-    // }
-    // return user.toResponseObject(true);
-  }
-
-  async signup(body: Partial<UserDto>) {
-    const { nickname } = body;
-    const user = await this.userRepository.findOne({ nickname });
+  async signup(body) {
+    const { wechatOpenId } = body;
+    const user = await this.userRepository.findOne({ wechatOpenId });
     if (user) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-    const newUser = await this.userRepository.create(body);
+    const newUser = this.userRepository.create(body);
     await this.userRepository.save(newUser);
-    return newUser;
+    const aaa = await this.userRepository.findOne({ wechatOpenId });
+    if (aaa) {
+      return aaa.toResponseObject(true);
+    }
   }
 }

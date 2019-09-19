@@ -49,14 +49,14 @@ export class UserController {
   }
 
   @Post('/login')
-  // @UsePipes(ValidationPipe)
+  @UsePipes(ValidationPipe)
   login(@Body() body: Partial<LoginDto>) {
     return this.userService.login(body);
   }
 
   @Post('/signup')
   @UsePipes(ValidationPipe)
-  signup(@Body() body: Partial<UserDto>) {
+  signup(@Body() body: any) {
     return this.userService.signup(body);
   }
 }
