@@ -45,6 +45,9 @@ export class UserEntity {
   @Column({ unique: true, nullable: true })
   wechatOpenId: string;
 
+  @Column({ unique: true, nullable: true })
+  wechatUnionId: string;
+
   @CreateDateColumn()
   created: Date;
 
@@ -61,7 +64,7 @@ export class UserEntity {
   // }
 
   toResponseObject(showToken: boolean = false): any {
-    const { id, wechatNickname, token } = this;
+    const { id, token } = this;
     const responseObject: {
       id: string;
       token?: string;
@@ -77,10 +80,10 @@ export class UserEntity {
   }
 
   private get token(): string {
-    const { wechatOpenId } = this;
+    const { id } = this;
     return sign(
       {
-        wechatOpenId
+        id
       },
       process.env.SECRET,
       { expiresIn: '7d' }

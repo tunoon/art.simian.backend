@@ -25,9 +25,6 @@ export class UserDto {
 
 export class LoginDto {
   code: string;
-  userInfo: {
-    avatarUrl: string;
-    gender: string;
-    nickName: string;
-  };
+  encryptedData: string;
+  iv: string;
 }

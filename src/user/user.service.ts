@@ -11,7 +11,7 @@ import { UserDto, LoginDto } from './dto/user.dto';
 import { UserEntity } from './user.entity';
 import { APPID, APPSECRET } from './constant';
 import { AddressEntity } from '../address/address.entity';
-
+import { WXBizDataCrypt } from './util/WXBizDataCrypt';
 const code2SessionUrl = (code: string) =>
   `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
 
@@ -26,21 +26,26 @@ export class UserService {
   ) {}
 
   async login(body: Partial<LoginDto>) {
-    const { code, userInfo } = body;
+    const { code, encryptedData, iv } = body;
     const data = await this.httpService
       .get(code2SessionUrl(code))
       .toPromise()
       .then(res => {
         return res.data;
       });
-    const { openid: wechatOpenId, session_key: sessionKey } = data;
-    const { nickName: wechatNickname, avatarUrl: wechatAvatarUrl } = userInfo;
-    const user = await this.userRepository.findOne({ wechatOpenId });
+
+    const { session_key: sessionKey } = data;
+    const pc = new WXBizDataCrypt(APPID, sessionKey);
+    const encrypted = pc.decryptData(encryptedData, iv);
+    const { openId, nickName, avatarUrl, unionId } = encrypted;
+
+    const user = await this.userRepository.findOne({ wechatUnionId: unionId });
     if (!user) {
       const newUser = this.userRepository.create({
-        wechatOpenId,
-        wechatAvatarUrl,
-        wechatNickname
+        wechatOpenId: openId,
+        wechatAvatarUrl: avatarUrl,
+        wechatNickname: nickName,
+        wechatUnionId: unionId
       });
       await this.userRepository.save(newUser);
       return newUser.toResponseObject(true);
