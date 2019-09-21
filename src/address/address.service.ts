@@ -25,7 +25,7 @@ export class AddressService {
     const addressList = await this.addressRepository.find({
       relations: ['user']
     });
-    return addressList.filter(address => address.user.id === id);
+    return addressList.map(({ user, ...rest }) => rest);
   }
 
   async getAddress(id: string) {
@@ -33,7 +33,6 @@ export class AddressService {
     if (!address) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    return address;
   }
 
   async createAddress(user: UserEntity, body: AddressDto) {

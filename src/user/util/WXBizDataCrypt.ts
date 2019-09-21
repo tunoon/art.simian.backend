@@ -3,7 +3,7 @@ import { createDecipheriv } from 'crypto';
 export class WXBizDataCrypt {
   appId: string;
   sessionKey: string;
-  constructor(appId, sessionKey) {
+  constructor(appId: string, sessionKey: string) {
     this.appId = appId;
     this.sessionKey = sessionKey;
   }
@@ -22,7 +22,6 @@ export class WXBizDataCrypt {
       );
       // 设置自动 padding 为 true，删除填充补位
       decipher.setAutoPadding(true);
-      console.log(encryptedDataBuffer);
       let decoded = decipher.update(encryptedDataBuffer, undefined, 'utf8');
       decoded += decipher.final('utf8');
 

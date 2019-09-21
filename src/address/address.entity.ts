@@ -32,7 +32,7 @@ export class AddressEntity {
   district: string;
 
   @Column()
-  address: string;
+  detail: string;
 
   @Column()
   isDefault: boolean;
@@ -42,4 +42,9 @@ export class AddressEntity {
 
   @UpdateDateColumn()
   updated: Date;
+
+  toResponseObject(showToken: boolean = false): any {
+    const { user, ...rest } = this;
+    return rest;
+  }
 }

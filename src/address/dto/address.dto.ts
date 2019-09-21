@@ -16,7 +16,7 @@ export class AddressDto {
   district: string;
 
   @IsString()
-  address: string;
+  detail: string;
 
   @IsBoolean()
   isDefault: boolean;
