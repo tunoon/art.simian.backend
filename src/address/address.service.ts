@@ -38,7 +38,8 @@ export class AddressService {
   async createAddress(user: UserEntity, body: AddressDto) {
     const address = this.addressRepository.create({ ...body, user });
     await this.addressRepository.save(address);
-    return address;
+    const { user: userInfo, ...rest } = address;
+    return rest;
   }
 
   async updateAddress(user: UserEntity, id: string, body: Partial<AddressDto>) {
