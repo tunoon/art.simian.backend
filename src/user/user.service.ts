@@ -7,13 +7,13 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserDto, LoginDto } from './dto/user.dto';
+import { UserDto, LoginDto } from './dto';
 import { UserEntity } from './user.entity';
-import { APPID, APPSECRET } from './constant';
+import { APP_ID, APP_SECRET } from './constant';
 import { AddressEntity } from '../address/address.entity';
 import { WXBizDataCrypt } from './util/WXBizDataCrypt';
 const code2SessionUrl = (code: string) =>
-  `https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${APPSECRET}&js_code=${code}&grant_type=authorization_code`;
+  `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`;
 
 @Injectable()
 export class UserService {
@@ -30,12 +30,10 @@ export class UserService {
     const data = await this.httpService
       .get(code2SessionUrl(code))
       .toPromise()
-      .then(res => {
-        return res.data;
-      });
+      .then(res => res.data);
 
     const { session_key: sessionKey } = data;
-    const pc = new WXBizDataCrypt(APPID, sessionKey);
+    const pc = new WXBizDataCrypt(APP_ID, sessionKey);
     const encrypted = pc.decryptData(encryptedData, iv);
     const { openId, nickName, avatarUrl, unionId } = encrypted;
 

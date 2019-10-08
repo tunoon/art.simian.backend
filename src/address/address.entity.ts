@@ -7,6 +7,7 @@ import {
   ManyToOne
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
+import { AddressDto } from './dto/address.dto';
 
 @Entity('address')
 export class AddressEntity {
@@ -43,7 +44,7 @@ export class AddressEntity {
   @UpdateDateColumn()
   updated: Date;
 
-  toResponseObject(showToken: boolean = false): any {
+  toResponseObject(showToken: boolean = false): AddressDto {
     const { user, ...rest } = this;
     return rest;
   }

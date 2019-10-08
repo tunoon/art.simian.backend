@@ -64,12 +64,16 @@ export class UserEntity {
   // }
 
   toResponseObject(showToken: boolean = false): any {
-    const { id, token } = this;
+    const { id, token, wechatAvatarUrl, wechatNickname } = this;
     const responseObject: {
       id: string;
+      wechatAvatarUrl: string;
+      wechatNickname: string;
       token?: string;
     } = {
-      id
+      id,
+      wechatAvatarUrl,
+      wechatNickname
     };
 
     if (showToken) {

@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsInt,
-  IsEmail,
-  IsNotEmpty,
-  IsMobilePhone
-} from 'class-validator';
+import { IsString, IsEmail, IsMobilePhone } from 'class-validator';
 export class UserDto {
   @IsString()
   nickname: string;
@@ -21,10 +15,4 @@ export class UserDto {
   wechatNickname: string;
   @IsString()
   wechatOpenId: string;
-}
-
-export class LoginDto {
-  code: string;
-  encryptedData: string;
-  iv: string;
 }

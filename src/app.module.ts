@@ -9,6 +9,12 @@ import { HttpExceptionFilter } from './common/exception/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { ProductModule } from './product/product.module';
 import { AddressModule } from './address/address.module';
+import { CategoryModule } from './category/category.module';
+import { AttributeModule } from './attribute/attribute.module';
+import { ColorModule } from './color/color.module';
+import { SizeModule } from './size/size.module';
+import { MaterialModule } from './material/material.module';
+import { WeightModule } from './weight/weight.module';
 
 @Module({
   imports: [
@@ -25,7 +31,13 @@ import { AddressModule } from './address/address.module';
     }),
     UserModule,
     ProductModule,
-    AddressModule
+    AddressModule,
+    CategoryModule,
+    AttributeModule,
+    ColorModule,
+    SizeModule,
+    MaterialModule,
+    WeightModule
   ],
   controllers: [AppController],
   providers: [
