@@ -4,8 +4,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  OneToMany
 } from 'typeorm';
+
+import { ColorEntity } from '../color/color.entity';
+import { MaterialEntity } from '../material/material.entity';
+import { WeightEntity } from '../weight/weight.entity';
+import { SizeEntity } from '../size/size.entity';
+import { DesignEntity } from '../design/design.entity';
 
 @Entity('attribute')
 export class AttributeEntity {
@@ -13,19 +19,22 @@ export class AttributeEntity {
   id: string;
 
   @Column()
-  color: string;
+  name: string;
 
-  @Column()
-  size: string;
+  @OneToMany(type => ColorEntity, color => color.attribute)
+  color: ColorEntity[];
 
-  @Column()
-  material: string;
+  @OneToMany(type => SizeEntity, size => size.attribute)
+  size: SizeEntity[];
 
-  @Column()
-  weight: string;
+  @OneToMany(type => MaterialEntity, material => material.attribute)
+  material: MaterialEntity[];
 
-  @Column()
-  design: string;
+  @OneToMany(type => WeightEntity, weight => weight.attribute)
+  weight: WeightEntity[];
+
+  @OneToMany(type => DesignEntity, design => design.attribute)
+  design: DesignEntity[];
 
   @CreateDateColumn()
   created: Date;

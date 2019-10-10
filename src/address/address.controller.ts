@@ -20,9 +20,9 @@ import { UserEntity } from '../user/user.entity';
 export class AddressController {
   constructor(private addressService: AddressService) {}
 
-  @Get('/all')
+  @Get('/get/all')
   @UseGuards(AuthGuard)
-  getAllUsers(@User() user: UserEntity) {
+  getAddressList(@User() user: UserEntity) {
     return this.addressService.getAddressList(user);
   }
 

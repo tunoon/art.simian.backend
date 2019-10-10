@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('weight')
+@Controller('api/weight')
 export class WeightController {}

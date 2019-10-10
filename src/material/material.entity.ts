@@ -10,17 +10,14 @@ import {
 import { AttributeEntity } from '../attribute/attitude.entity';
 
 @Entity('color')
-export class ColorEntity {
+export class MaterialEntity {
   @PrimaryGeneratedColumn('increment')
   id: string;
 
   @Column()
   value: string;
 
-  @Column()
-  image: string;
-
-  @ManyToOne(type => AttributeEntity, attribute => attribute.color)
+  @ManyToOne(type => AttributeEntity, attribute => attribute.material)
   attribute: AttributeEntity;
 
   @CreateDateColumn()

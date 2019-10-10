@@ -21,7 +21,6 @@ export class AddressService {
   }
 
   async getAddressList(user: UserEntity) {
-    const { id } = user;
     const addressList = await this.addressRepository.find({
       relations: ['user']
     });

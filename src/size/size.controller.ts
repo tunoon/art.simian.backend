@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('size')
+@Controller('api/size')
 export class SizeController {}

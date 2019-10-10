@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('material')
+@Controller('api/material')
 export class MaterialController {}

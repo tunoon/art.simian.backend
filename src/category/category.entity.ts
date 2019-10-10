@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  OneToMany
 } from 'typeorm';
+
+import { ProductEntity } from '../product/product.entity';
 
 @Entity('category')
 export class CategoryEntity {
@@ -13,19 +15,10 @@ export class CategoryEntity {
   id: string;
 
   @Column()
-  sheet: string;
+  name: string;
 
-  @Column()
-  towel: string;
-
-  @Column()
-  loungewear: string;
-
-  @Column()
-  comforter: string;
-
-  @Column()
-  pillow: string;
+  @OneToMany(type => ProductEntity, product => product.category)
+  productList: ProductEntity[];
 
   @CreateDateColumn()
   created: Date;

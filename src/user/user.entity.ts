@@ -32,7 +32,10 @@ export class UserEntity {
   @Column({ nullable: true })
   password: string;
 
-  @OneToMany(type => AddressEntity, addressList => addressList.user)
+  @Column({ nullable: true })
+  role: number;
+
+  @OneToMany(type => AddressEntity, address => address.user)
   addressList: AddressEntity[];
 
   // wechat info

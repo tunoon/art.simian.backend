@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       throw new HttpException('Invalid token', HttpStatus.FORBIDDEN);
     }
     try {
-      const decode = await verify(token, process.env.SECRET);
+      const decode = verify(token, process.env.SECRET);
       return decode;
     } catch (error) {
       const message = `Token error: ${error.message || error.name}`;

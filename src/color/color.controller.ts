@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('color')
+@Controller('api/color')
 export class ColorController {}

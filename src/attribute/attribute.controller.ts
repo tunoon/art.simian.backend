@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('attribute')
+@Controller('api/attribute')
 export class AttributeController {}

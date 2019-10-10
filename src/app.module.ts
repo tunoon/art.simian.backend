@@ -15,6 +15,7 @@ import { ColorModule } from './color/color.module';
 import { SizeModule } from './size/size.module';
 import { MaterialModule } from './material/material.module';
 import { WeightModule } from './weight/weight.module';
+import { DesignModule } from './design/design.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { WeightModule } from './weight/weight.module';
     ColorModule,
     SizeModule,
     MaterialModule,
-    WeightModule
+    WeightModule,
+    DesignModule
   ],
   controllers: [AppController],
   providers: [
