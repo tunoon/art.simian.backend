@@ -1,3 +1,1 @@
-import { CategoryDto } from './category.dto';
-
-export { CategoryDto };
+export * from './category.dto';

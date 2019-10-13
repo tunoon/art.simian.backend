@@ -21,7 +21,9 @@ export class AddressService {
   }
 
   async getAddressList(user: UserEntity) {
+    const { id: userId } = user;
     const addressList = await this.addressRepository.find({
+      where: { user: { id: userId } },
       relations: ['user']
     });
     return addressList.map(({ user, ...rest }) => rest);
