@@ -10,6 +10,7 @@ import {
 import { hash, compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { AddressEntity } from '../address/address.entity';
+import { CategoryEntity } from '../category/category.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -37,6 +38,9 @@ export class UserEntity {
 
   @OneToMany(type => AddressEntity, address => address.user)
   addressList: AddressEntity[];
+
+  @OneToMany(type => CategoryEntity, category => category.user)
+  categories: CategoryEntity[];
 
   // wechat info
   @Column({ nullable: true })

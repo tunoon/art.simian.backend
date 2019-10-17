@@ -18,7 +18,7 @@ export class ColorEntity {
   value: string;
 
   @Column()
-  image: string;
+  images: string;
 
   @ManyToOne(type => AttributeEntity, attribute => attribute.color)
   attribute: AttributeEntity;

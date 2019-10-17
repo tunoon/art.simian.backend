@@ -33,8 +33,8 @@ export class AddressController {
   }
 
   @Post('/create')
-  @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   createAddress(@User() user: UserEntity, @Body() body: AddressDto) {
     return this.addressService.createAddress(user, body);
   }
