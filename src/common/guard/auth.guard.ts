@@ -1,9 +1,9 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
   HttpException,
-  HttpStatus
+  HttpStatus,
+  Injectable
 } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 @Injectable()

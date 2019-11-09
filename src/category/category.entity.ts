@@ -1,19 +1,19 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  ManyToOne,
   OneToMany,
-  ManyToOne
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
-import { UserEntity } from '../user/user.entity';
 import { ProductEntity } from '../product/product.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('category')
 export class CategoryEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(type => UserEntity, user => user.categories)

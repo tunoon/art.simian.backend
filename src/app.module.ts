@@ -1,22 +1,15 @@
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { HttpExceptionFilter } from './common/exception/http-exception.filter';
-import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
-import { ProductModule } from './product/product.module';
+import { HttpExceptionFilter, LoggingInterceptor } from './common';
+
 import { AddressModule } from './address/address.module';
 import { CategoryModule } from './category/category.module';
-import { AttributeModule } from './attribute/attribute.module';
-import { ColorModule } from './color/color.module';
-import { SizeModule } from './size/size.module';
-import { MaterialModule } from './material/material.module';
-import { WeightModule } from './weight/weight.module';
-import { DesignModule } from './design/design.module';
-
+import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -33,13 +26,7 @@ import { DesignModule } from './design/design.module';
     UserModule,
     ProductModule,
     AddressModule,
-    CategoryModule,
-    AttributeModule,
-    ColorModule,
-    SizeModule,
-    MaterialModule,
-    WeightModule,
-    DesignModule
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [

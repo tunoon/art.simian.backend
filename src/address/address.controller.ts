@@ -1,20 +1,20 @@
 import {
-  Controller,
   Body,
-  Param,
+  Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
-  UsePipes,
-  UseGuards
+  UseGuards,
+  UsePipes
 } from '@nestjs/common';
-import { AddressService } from './address.service';
-import { AddressDto } from './dto/address.dto';
-import { ValidationPipe } from '../common/pipe/validation.pipe';
-import { AuthGuard } from '../common/guard/auth.guard';
+import { AuthGuard, ValidationPipe } from '../common';
+
 import { User } from '../user/user.decorator';
 import { UserEntity } from '../user/user.entity';
+import { AddressService } from './address.service';
+import { AddressDto } from './dto/address.dto';
 
 @Controller('api/address')
 export class AddressController {

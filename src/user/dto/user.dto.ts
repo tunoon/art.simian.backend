@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsMobilePhone } from 'class-validator';
+import { IsEmail, IsMobilePhone, IsString } from 'class-validator';
 export class UserDto {
   @IsString()
   nickname: string;

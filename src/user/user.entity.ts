@@ -1,14 +1,14 @@
+import { compare, hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-  OneToMany
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
-import { hash, compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
 import { AddressEntity } from '../address/address.entity';
 import { CategoryEntity } from '../category/category.entity';
 
@@ -61,10 +61,13 @@ export class UserEntity {
   @UpdateDateColumn()
   updated: Date;
 
-  // @BeforeInsert()
-  // async hashPassword() {
-  //   this.password = await hash(this.password, 10);
-  // }
+  @BeforeInsert()
+  async hashPassword() {
+    if (!this.password) {
+      return;
+    }
+    this.password = await hash(this.password, 10);
+  }
 
   // async comparePassword(attempt: string): Promise<boolean> {
   //   return await compare(attempt, this.password);

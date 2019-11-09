@@ -34,5 +34,5 @@ export class WXBizDataCrypt {
     } catch (err) {
       throw new Error('Illegal Buffer');
     }
-  };
+  }
 }

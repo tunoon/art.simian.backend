@@ -1,20 +1,19 @@
 import {
-  Controller,
   Body,
-  Param,
+  Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
-  UsePipes,
   UseFilters,
-  UseGuards
+  UseGuards,
+  UsePipes
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserDto, LoginDto } from './dto';
+import { AuthGuard, ValidationPipe } from '../common';
+import { LoginDto, UserDto } from './dto';
 import { User } from './user.decorator';
-import { AuthGuard } from '../common/guard/auth.guard';
-import { ValidationPipe } from '../common/pipe/validation.pipe';
+import { UserService } from './user.service';
 
 @Controller('api/user')
 export class UserController {
