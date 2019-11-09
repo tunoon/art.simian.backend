@@ -23,6 +23,9 @@ export class CategoryEntity {
   productList: ProductEntity[];
 
   @Column()
+  name: string;
+
+  @Column()
   value: string;
 
   @CreateDateColumn()
