@@ -94,10 +94,11 @@ export class UserEntity {
   }
 
   private get token(): string {
-    const { id } = this;
+    const { id, wechatUnionId } = this;
     return sign(
       {
-        id
+        id,
+        wechatUnionId
       },
       process.env.SECRET,
       { expiresIn: '7d' }

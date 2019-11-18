@@ -10,6 +10,7 @@ import {
 
 import { ProductEntity } from '../product/product.entity';
 import { UserEntity } from '../user/user.entity';
+import { CategoryRes } from './dto';
 
 @Entity('category')
 export class CategoryEntity {
@@ -34,8 +35,8 @@ export class CategoryEntity {
   @UpdateDateColumn()
   updated: Date;
 
-  toResponse(): { id: string; value: string } {
-    const { id, value } = this;
-    return { id, value };
+  toResponse(): CategoryRes {
+    const { id, name, value } = this;
+    return { id, name, value };
   }
 }

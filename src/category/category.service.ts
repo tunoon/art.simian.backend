@@ -24,6 +24,10 @@ export class CategoryService {
   }
 
   async createCategory(user: UserEntity, body: CategoryDto) {
+    const isExist = !!this.categoryRepository.findOne({ name: body.name });
+    if (isExist) {
+      return { message: 'category already exist' };
+    }
     const category = this.categoryRepository.create({ ...body, user });
     await this.categoryRepository.save(category);
     return category.toResponse();
