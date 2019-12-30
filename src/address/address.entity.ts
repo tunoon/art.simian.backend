@@ -11,8 +11,8 @@ import { AddressDto } from './dto/address.dto';
 
 @Entity('address')
 export class AddressEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @ManyToOne(type => UserEntity, user => user.addressList)
   user: UserEntity;

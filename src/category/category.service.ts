@@ -24,7 +24,9 @@ export class CategoryService {
   }
 
   async createCategory(user: UserEntity, body: CategoryDto) {
-    const isExist = !!this.categoryRepository.findOne({ name: body.name });
+    const isExist = await this.categoryRepository.findOne({
+      value: body.value
+    });
     if (isExist) {
       return { message: 'category already exist' };
     }
@@ -33,7 +35,7 @@ export class CategoryService {
     return category.toResponse();
   }
 
-  async updateCategory(id: string, body: Partial<CategoryDto>) {
+  async updateCategory(id: number, body: Partial<CategoryDto>) {
     const category = await this.categoryRepository.findOne({
       where: { id }
     });
@@ -44,7 +46,7 @@ export class CategoryService {
     return { ...category.toResponse(), ...body };
   }
 
-  async deleteCategory(id: string) {
+  async deleteCategory(id: number) {
     const category = await this.categoryRepository.findOne({
       where: { id }
     });

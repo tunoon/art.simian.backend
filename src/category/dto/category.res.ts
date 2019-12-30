@@ -1,12 +1,10 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
+import { CategoryDto } from './category.dto';
 
-export class CategoryRes {
-  @IsString()
-  id: string;
+export class CategoryRes extends CategoryDto {
+  @IsNumber()
+  id: number;
 
-  @IsString()
-  name: string;
-
-  @IsString()
-  value: string;
+  @IsNumber()
+  parentId: number;
 }

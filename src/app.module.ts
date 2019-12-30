@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { AddressModule } from './address/address.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HttpExceptionFilter, LoggingInterceptor } from './common';
-
-import { AddressModule } from './address/address.module';
+import { AttributeValueModule } from './attribute-value/attribute-value.module';
+import { AttributeModule } from './attribute/attribute.module';
 import { CategoryModule } from './category/category.module';
+import { HttpExceptionFilter, LoggingInterceptor } from './common';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -26,7 +28,9 @@ import { UserModule } from './user/user.module';
     UserModule,
     ProductModule,
     AddressModule,
-    CategoryModule
+    CategoryModule,
+    AttributeModule,
+    AttributeValueModule
   ],
   controllers: [AppController],
   providers: [

@@ -39,14 +39,14 @@ export class CategoryController {
   @Put('/update/:id')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
-  updateCategory(@Param('id') id: string, @Body() body: Partial<CategoryDto>) {
+  updateCategory(@Param('id') id: number, @Body() body: Partial<CategoryDto>) {
     return this.categoryService.updateCategory(id, body);
   }
 
   @Delete('/delete/:id')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
-  deleteCategory(@Param('id') id: string) {
+  deleteCategory(@Param('id') id: number) {
     return this.categoryService.deleteCategory(id);
   }
 }

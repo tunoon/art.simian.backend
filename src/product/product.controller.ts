@@ -11,15 +11,21 @@ import {
 } from '@nestjs/common';
 import { AuthGuard, ValidationPipe } from '../common';
 import { User } from '../user/user.decorator';
-import { UserEntity } from '../user/user.entity';
+import { ProductService } from './product.service';
+
 import { ProductDto } from './dto';
 
 @Controller('api/product')
 export class ProductController {
-  @Post('/create')
+  constructor(private productService: ProductService) {}
+  @Post('/create/:id')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
-  createProduct(@User() user: UserEntity, @Body() body: ProductDto) {
-    return {};
+  createProduct(
+    @Param('id') categoryId: string,
+    @User('id') userId: string,
+    @Body() body: ProductDto
+  ) {
+    return this.productService.createProduct(categoryId, userId, body);
   }
 }

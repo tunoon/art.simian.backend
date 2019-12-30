@@ -10,7 +10,11 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 import { AddressEntity } from '../address/address.entity';
+import { AttributeValueEntity } from '../attribute-value/attribute-value.entity';
+import { AttributeEntity } from '../attribute/attribute.entity';
 import { CategoryEntity } from '../category/category.entity';
+import { ProductEntity } from '../product/product.entity';
+import { Role } from './constant';
 
 @Entity('user')
 export class UserEntity {
@@ -33,14 +37,31 @@ export class UserEntity {
   @Column({ nullable: true })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ default: Role.CUSTOMER })
   role: number;
 
+  // 用户地址
   @OneToMany(type => AddressEntity, address => address.user)
   addressList: AddressEntity[];
 
+  // 管理员创建的category
   @OneToMany(type => CategoryEntity, category => category.user)
-  categories: CategoryEntity[];
+  categoryList: CategoryEntity[];
+
+  // 管理员创建的product
+  @OneToMany(type => ProductEntity, product => product.user)
+  productList: ProductEntity[];
+
+  // 管理员创建的attribute
+  @OneToMany(type => AttributeEntity, attribute => attribute.user)
+  attributeList: AttributeEntity[];
+
+  // 管理员创建的attributeValue
+  @OneToMany(
+    type => AttributeValueEntity,
+    attributeValue => attributeValue.user
+  )
+  attributeValueList: AttributeValueEntity[];
 
   // wechat info
   @Column({ nullable: true })

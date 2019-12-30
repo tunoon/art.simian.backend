@@ -2,46 +2,43 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+
 import { AttributeValueEntity } from '../attribute-value/attribute-value.entity';
-import { CategoryEntity } from '../category/category.entity';
 import { UserEntity } from '../user/user.entity';
 
-@Entity('product')
-export class ProductEntity {
+@Entity('attribute')
+export class AttributeEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(type => UserEntity, user => user.productList)
+  @ManyToOne(
+    type => UserEntity,
+    user => user.attributeList
+  )
   user: UserEntity;
 
-  @ManyToOne(type => CategoryEntity, category => category.productList)
-  category: CategoryEntity;
-
-  @ManyToMany(
+  @OneToMany(
     type => AttributeValueEntity,
-    attributeValue => attributeValue.productList
+    attributeValue => attributeValue.attribute
   )
-  @JoinTable()
   attributeValueList: AttributeValueEntity[];
 
   @Column()
-  listPrice: string;
-
-  @Column()
-  discountPrice: string;
-
-  @Column({ type: 'text' })
-  desc: string;
+  value: string;
 
   @CreateDateColumn()
   created: Date;
 
   @UpdateDateColumn()
   updated: Date;
+
+  toResponse(): any {
+    const { id, value, attributeValueList } = this;
+    return { id, value, attributeValueList };
+  }
 }

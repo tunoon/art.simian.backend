@@ -2,41 +2,36 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 
+import { AttributeEntity } from '../attribute/attribute.entity';
 import { ProductEntity } from '../product/product.entity';
 import { UserEntity } from '../user/user.entity';
-import { CategoryRes } from './dto';
 
-@Entity('category')
-export class CategoryEntity {
+@Entity('attribute-value')
+export class AttributeValueEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(type => UserEntity, user => user.categoryList)
+  @ManyToOne(type => UserEntity, user => user.attributeValueList)
   user: UserEntity;
 
-  @OneToMany(type => ProductEntity, product => product.category)
+  @ManyToOne(type => AttributeEntity, attribute => attribute.attributeValueList)
+  attribute: AttributeEntity;
+
+  @ManyToMany(type => ProductEntity, product => product.attributeValueList)
   productList: ProductEntity[];
 
   @Column()
   value: string;
-
-  @Column({ default: 0 })
-  parentId: number;
 
   @CreateDateColumn()
   created: Date;
 
   @UpdateDateColumn()
   updated: Date;
-
-  toResponse(): CategoryRes {
-    const { id, parentId, value } = this;
-    return { id, parentId, value };
-  }
 }

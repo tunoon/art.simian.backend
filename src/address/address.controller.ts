@@ -28,7 +28,7 @@ export class AddressController {
   }
 
   @Get('/get/:id')
-  getAddress(@Param('id') id: string) {
+  getAddress(@Param('id') id: number) {
     return this.addressService.getAddress(id);
   }
 
@@ -44,7 +44,7 @@ export class AddressController {
   @UseGuards(AuthGuard)
   updateAddress(
     @User() user: UserEntity,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() body: Partial<AddressDto>
   ) {
     return this.addressService.updateAddress(user, id, body);
@@ -53,7 +53,7 @@ export class AddressController {
   @Delete('/delete/:id')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
-  deleteAddress(@User() user: UserEntity, @Param('id') id: string) {
+  deleteAddress(@User() user: UserEntity, @Param('id') id: number) {
     return this.addressService.deleteAddress(user, id);
   }
 }

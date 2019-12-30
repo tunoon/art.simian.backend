@@ -29,7 +29,7 @@ export class AddressService {
     return addressList.map(({ user, ...rest }) => rest);
   }
 
-  async getAddress(id: string) {
+  async getAddress(id: number) {
     const address = await this.addressRepository.findOne({ id });
     if (!address) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
@@ -43,7 +43,7 @@ export class AddressService {
     return rest;
   }
 
-  async updateAddress(user: UserEntity, id: string, body: Partial<AddressDto>) {
+  async updateAddress(user: UserEntity, id: number, body: Partial<AddressDto>) {
     const address = await this.addressRepository.findOne({
       where: { id },
       relations: ['user']
@@ -56,7 +56,7 @@ export class AddressService {
     return { ...address, ...body };
   }
 
-  async deleteAddress(user: UserEntity, id: string) {
+  async deleteAddress(user: UserEntity, id: number) {
     const address = await this.addressRepository.findOne({
       where: { id },
       relations: ['user']
