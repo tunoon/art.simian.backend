@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -10,6 +11,7 @@ import {
 
 import { AttributeValueEntity } from '../attribute-value/attribute-value.entity';
 import { UserEntity } from '../user/user.entity';
+import { ProductEntity } from '../product/product.entity';
 
 @Entity('attribute')
 export class AttributeEntity {
@@ -18,15 +20,21 @@ export class AttributeEntity {
 
   @ManyToOne(
     type => UserEntity,
-    user => user.attributeList
+    creator => creator.attributes
   )
-  user: UserEntity;
+  creator: UserEntity;
+
+  @ManyToMany(
+    type => ProductEntity,
+    product => product.attributes
+  )
+  products: ProductEntity;
 
   @OneToMany(
     type => AttributeValueEntity,
     attributeValue => attributeValue.attribute
   )
-  attributeValueList: AttributeValueEntity[];
+  attributeValues: AttributeValueEntity[];
 
   @Column()
   value: string;
@@ -38,7 +46,7 @@ export class AttributeEntity {
   updated: Date;
 
   toResponse(): any {
-    const { id, value, attributeValueList } = this;
-    return { id, value, attributeValueList };
+    const { id, value, attributeValues } = this;
+    return { id, value, attributeValues };
   }
 }

@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import {
   BeforeInsert,
@@ -41,25 +41,37 @@ export class UserEntity {
   role: number;
 
   // 用户地址
-  @OneToMany(type => AddressEntity, address => address.user)
+  @OneToMany(
+    type => AddressEntity,
+    address => address.user
+  )
   addressList: AddressEntity[];
 
   // 管理员创建的category
-  @OneToMany(type => CategoryEntity, category => category.user)
-  categoryList: CategoryEntity[];
+  @OneToMany(
+    type => CategoryEntity,
+    category => category.creator
+  )
+  categories: CategoryEntity[];
 
   // 管理员创建的product
-  @OneToMany(type => ProductEntity, product => product.user)
-  productList: ProductEntity[];
+  @OneToMany(
+    type => ProductEntity,
+    product => product.creator
+  )
+  products: ProductEntity[];
 
   // 管理员创建的attribute
-  @OneToMany(type => AttributeEntity, attribute => attribute.user)
-  attributeList: AttributeEntity[];
+  @OneToMany(
+    type => AttributeEntity,
+    attribute => attribute.creator
+  )
+  attributes: AttributeEntity[];
 
   // 管理员创建的attributeValue
   @OneToMany(
     type => AttributeValueEntity,
-    attributeValue => attributeValue.user
+    attributeValue => attributeValue.creator
   )
   attributeValueList: AttributeValueEntity[];
 
@@ -94,7 +106,7 @@ export class UserEntity {
   //   return await compare(attempt, this.password);
   // }
 
-  toResponseObject(showToken: boolean = false): any {
+  toResponseObject(showToken = false): any {
     const { id, token, wechatAvatarUrl, wechatNickname } = this;
     const responseObject: {
       id: string;

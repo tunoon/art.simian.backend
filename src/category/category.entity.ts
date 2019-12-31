@@ -17,11 +17,17 @@ export class CategoryEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(type => UserEntity, user => user.categoryList)
-  user: UserEntity;
+  @ManyToOne(
+    type => UserEntity,
+    creator => creator.categories
+  )
+  creator: UserEntity;
 
-  @OneToMany(type => ProductEntity, product => product.category)
-  productList: ProductEntity[];
+  @OneToMany(
+    type => ProductEntity,
+    product => product.category
+  )
+  products: ProductEntity[];
 
   @Column()
   value: string;

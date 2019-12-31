@@ -13,24 +13,24 @@ export class CategoryService {
   ) {}
 
   async getAllCategories() {
-    const categories = await this.categoryRepository.find();
-    return categories.map((category: CategoryEntity) => category.toResponse());
+    const Categories = await this.categoryRepository.find();
+    return Categories.map((category: CategoryEntity) => category.toResponse());
   }
 
   async deleteAllCategories() {
-    const categories = await this.categoryRepository.find();
-    await this.categoryRepository.remove(categories);
+    const Categories = await this.categoryRepository.find();
+    await this.categoryRepository.remove(Categories);
     return { message: 'delete successfully', statusCode: HttpStatus.OK };
   }
 
-  async createCategory(user: UserEntity, body: CategoryDto) {
+  async createCategory(creator: UserEntity, body: CategoryDto) {
     const isExist = await this.categoryRepository.findOne({
       value: body.value
     });
     if (isExist) {
       return { message: 'category already exist' };
     }
-    const category = this.categoryRepository.create({ ...body, user });
+    const category = this.categoryRepository.create({ ...body, creator });
     await this.categoryRepository.save(category);
     return category.toResponse();
   }

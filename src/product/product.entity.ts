@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { AttributeValueEntity } from '../attribute-value/attribute-value.entity';
+import { AttributeEntity } from '../attribute/attribute.entity';
 import { CategoryEntity } from '../category/category.entity';
 import { UserEntity } from '../user/user.entity';
 
@@ -17,18 +17,24 @@ export class ProductEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(type => UserEntity, user => user.productList)
-  user: UserEntity;
+  @ManyToOne(
+    type => UserEntity,
+    creator => creator.products
+  )
+  creator: UserEntity;
 
-  @ManyToOne(type => CategoryEntity, category => category.productList)
+  @ManyToOne(
+    type => CategoryEntity,
+    category => category.products
+  )
   category: CategoryEntity;
 
   @ManyToMany(
-    type => AttributeValueEntity,
-    attributeValue => attributeValue.productList
+    type => AttributeEntity,
+    attribute => attribute.products
   )
   @JoinTable()
-  attributeValueList: AttributeValueEntity[];
+  attributes: AttributeEntity[];
 
   @Column()
   listPrice: string;

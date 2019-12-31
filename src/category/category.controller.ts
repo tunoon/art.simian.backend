@@ -32,8 +32,8 @@ export class CategoryController {
   @Post('/create')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
-  createCategory(@User() user: UserEntity, @Body() body: CategoryDto) {
-    return this.categoryService.createCategory(user, body);
+  createCategory(@User() creator: UserEntity, @Body() body: CategoryDto) {
+    return this.categoryService.createCategory(creator, body);
   }
 
   @Put('/update/:id')
